@@ -1,0 +1,18 @@
+ARG ARCH=frommakefile
+ARG DOCKERSRC=frommakefile
+ARG USERNAME=frommakefile
+#
+FROM ${USERNAME}/${DOCKERSRC}:${ARCH}
+#
+ENV NODE_SASS_PLATFORM=alpine
+#
+RUN set -xe \
+    && npm install --unsafe-perm -g node-gyp webpack-dev-server rimraf webpack typescript @angular/cli \
+    && rm -rf /var/cache/apk/* /tmp/*
+#
+USER alpine
+WORKDIR /home/alpine/project/
+#
+EXPOSE 3000 4200 8080
+# VOLUME /home/alpine/project/ # specify at runtime
+ENTRYPOINT ["ng"]
